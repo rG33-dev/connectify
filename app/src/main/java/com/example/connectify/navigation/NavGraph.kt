@@ -3,8 +3,12 @@ package com.example.connectify.navigation
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -80,6 +84,30 @@ fun SetupNavGraph(navController: NavHostController) {
 }
 
 @Composable
+fun AppLogo() {
+    Box(
+        modifier = Modifier
+            .size(100.dp)
+            .border(
+                width = 3.dp,
+                brush = Brush.linearGradient(
+                    colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.tertiary)
+                ),
+                shape = CircleShape
+            )
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = Icons.Default.Share,
+            contentDescription = "Connectify Logo",
+            modifier = Modifier.size(60.dp),
+            tint = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+@Composable
 fun ScreenA(navController: NavHostController) {
     var visible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { visible = true }
@@ -97,14 +125,23 @@ fun ScreenA(navController: NavHostController) {
     ) {
         AnimatedVisibility(
             visible = visible,
-            enter = fadeIn(tween(1000)) + expandVertically(tween(1000))
+            enter = fadeIn(tween(1000)) + scaleIn(initialScale = 0.5f, animationSpec = tween(1000))
+        ) {
+            AppLogo()
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        AnimatedVisibility(
+            visible = visible,
+            enter = fadeIn(tween(1200)) + expandVertically(tween(1200))
         ) {
             Text(
-                text = "Connectify Home",
+                text = "Connectify",
                 style = MaterialTheme.typography.headlineLarge.copy(
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp
+                    letterSpacing = 4.sp
                 )
             )
         }
